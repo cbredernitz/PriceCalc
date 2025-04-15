@@ -1,0 +1,4 @@
+config:
+  tariff: true
+  sale: false
+  double: false
