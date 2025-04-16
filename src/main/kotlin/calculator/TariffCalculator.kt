@@ -3,21 +3,22 @@ package org.example.calculator
 import org.json.JSONObject
 import java.io.File
 import java.math.BigDecimal
+import kotlin.time.times
 
 class TariffCalculator: ICalculator {
     override fun calculate(price: Int): Double {
         // get tarrifPrice for the time being since price is an int and not a data object with price and origin
         // I'll just hit it from china for convenience
-        val tariff = getCountryTariff("CA")
+        val tariff = getCountryTariff("CN")
 
-        return (price.times(tariff.precision()).toDouble()) //TODO: this math is not right atm. Had to refactor.
+        return price + (price.times(tariff.toDouble()))
     }
 
     private fun getCountryTariff(countryCode: String): BigDecimal {
-        // Read file as string
-        val jsonString = File("tariffs.json").readText() //TODO: Fix this to use project path and not the fullpath
 
-        // Parse JSON
+        val inputStream = javaClass.getResourceAsStream("/tariffs.json")
+        val jsonString = inputStream?.bufferedReader()?.use { it.readText() }
+
         val jsonObject = JSONObject(jsonString)
 
         // Get keys (country codes)
