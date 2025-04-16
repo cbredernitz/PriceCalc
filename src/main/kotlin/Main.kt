@@ -18,6 +18,7 @@ fun main() {
 
     val config = data["config"] ?: emptyMap()
 
+    // this grabs the true value. Will update to only allow one to be turned on later
     val enabledConfig = config
         .filterValues { it }
         .mapNotNull { (key, _) ->
@@ -27,7 +28,7 @@ fun main() {
                 "double" -> DoubleCalculator()
                 else -> DefaultCalculator()
             }
-        }
+        }.first()
 
-    println(enabledConfig.first().calculate(1304))
+    println(enabledConfig.calculate(1304))
 }
